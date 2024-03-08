@@ -1,7 +1,12 @@
-# The 100 ms Data Access Challenge
+# Cloudflare to pgEdge Latency Tests
 
-Can we use Cloudflare Workers and pgEdge to achieve <100 ms data access from
-anywhere in the US and Europe?
+Example application and test suite for measuring the latency of data access
+requests from Cloudflare Workers to pgEdge distributed PostgreSQL databases.
+
+## The 100 ms Data Access Challenge
+
+Can we use Cloudflare Workers and pgEdge to achieve <100 ms data access for
+end-users located anywhere in the US and Europe?
 
 See the corresponding blog post on [pgedge.com/blog](https://www.pgedge.com/blog).
 
@@ -23,23 +28,3 @@ If you want to deploy and run this all yourself, you'll need the following:
 - Cloudflare account (free or $5/month Workers paid plan)
 - pgEdge account (free Developer Edition plan)
 - Terraform and Google Cloud (for measuring latencies)
-
-## Cloudflare Request Headers
-
-Just for reference. You can grab the client's location information from the
-Cloudflare request.
-
-```javascript
-function getCloudflareInfo(request: Request) {
-  const cf = request.cf || {};
-  return {
-    latitude: cf.latitude,
-    longitude: cf.longitude,
-    country: cf.country,
-    city: cf.city,
-    colo: cf.colo,
-    timezone: cf.timezone,
-    region: cf.region,
-  };
-}
-```

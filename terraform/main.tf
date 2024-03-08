@@ -48,6 +48,15 @@ module "compute-yyz" { // Toronto
   project_name = var.project_name
 }
 
+module "compute-lhr" { // London
+  source       = "./modules/compute"
+  name         = "cfb-lhr"
+  region       = "europe-west2"
+  zone         = "europe-west2-a"
+  machine_type = local.machine_type
+  project_name = var.project_name
+}
+
 output "ips" {
   value = {
     lax = module.compute-lax.instance_ip
@@ -55,5 +64,6 @@ output "ips" {
     dfw = module.compute-dfw.instance_ip
     chs = module.compute-chs.instance_ip
     yyz = module.compute-yyz.instance_ip
+    lhr = module.compute-lhr.instance_ip
   }
 }

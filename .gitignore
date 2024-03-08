@@ -5,6 +5,9 @@ terraform.tfstate.backup
 /cfb-query-d1.url.txt
 /cfb-query-pgedge.url.txt
 
+# Exclude this for now since the Google project ID goes in here
+/terraform/provider.tf
+
 # Logs
 logs
 *.log

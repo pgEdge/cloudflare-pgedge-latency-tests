@@ -1,5 +1,5 @@
 {
-	"name": "cfb-query-pgedge",
+	"name": "query-pgedge",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {

@@ -9,19 +9,15 @@ endif
 		terraform apply \
 		-var "project_name=$(GOOGLE_PROJECT)" \
 		-auto-approve
-	cd workers/cfb-query-pgedge && wrangler deploy
-	cd workers/cfb-query-d1 && wrangler deploy
-	$(MAKE) capture-urls
+	cd workers/query-pgedge && wrangler deploy
+	$(MAKE) capture-url
 
-.PHONY: capture-urls
-capture-urls:
-	$(shell cd workers/cfb-query-pgedge && wrangler deploy | grep https | xargs > ../../cfb-query-pgedge.url.txt)
-	$(shell cd workers/cfb-query-d1 && wrangler deploy | grep https | xargs > ../../cfb-query-d1.url.txt)
-	@echo "cfb-query-pgedge: $(shell cat cfb-query-pgedge.url.txt)"
-	@echo "cfb-query-d1: $(shell cat cfb-query-d1.url.txt)"
+.PHONY: capture-url
+capture-url:
+	$(shell cd workers/query-pgedge && wrangler deploy | grep https | xargs > ../../worker.url.txt)
+	@echo "query-pgedge url: $(shell cat worker.url.txt)"
 
-QUERY_PGEDGE_URL ?= $(shell cat cfb-query-pgedge.url.txt)
-QUERY_D1_URL ?= $(shell cat cfb-query-d1.url.txt)
+WORKER_URL ?= $(shell cat worker.url.txt)
 
 .PHONY: deploy-measure-latency
 deploy-measure-latency:
@@ -39,14 +35,14 @@ SSH ?= gcloud compute ssh
 .PHONY: run-measure-latency
 run-measure-latency:
 	@echo "-----"
-	$(SSH) --zone us-west2-a cfb-lax --command "./measure-latency -url $(QUERY_PGEDGE_URL) -count $(MEASUREMENT_COUNT)"
+	$(SSH) --zone us-west2-a cfb-lax --command "./measure-latency -url $(WORKER_URL) -count $(MEASUREMENT_COUNT)"
 	@echo "-----"
-	$(SSH) --zone us-west3-a cfb-slc --command "./measure-latency -url $(QUERY_PGEDGE_URL) -count $(MEASUREMENT_COUNT)"
+	$(SSH) --zone us-west3-a cfb-slc --command "./measure-latency -url $(WORKER_URL) -count $(MEASUREMENT_COUNT)"
 	@echo "-----"
-	$(SSH) --zone us-south1-a cfb-dfw --command "./measure-latency -url $(QUERY_PGEDGE_URL) -count $(MEASUREMENT_COUNT)"
+	$(SSH) --zone us-south1-a cfb-dfw --command "./measure-latency -url $(WORKER_URL) -count $(MEASUREMENT_COUNT)"
 	@echo "-----"
-	$(SSH) --zone us-east1-b cfb-chs --command "./measure-latency -url $(QUERY_PGEDGE_URL) -count $(MEASUREMENT_COUNT)"
+	$(SSH) --zone us-east1-b cfb-chs --command "./measure-latency -url $(WORKER_URL) -count $(MEASUREMENT_COUNT)"
 	@echo "-----"
-	$(SSH) --zone northamerica-northeast2-a cfb-yyz --command "./measure-latency -url $(QUERY_PGEDGE_URL) -count $(MEASUREMENT_COUNT)"
+	$(SSH) --zone northamerica-northeast2-a cfb-yyz --command "./measure-latency -url $(WORKER_URL) -count $(MEASUREMENT_COUNT)"
 	@echo "-----"
-	$(SSH) --zone europe-west2-a cfb-lhr --command "./measure-latency -url $(QUERY_PGEDGE_URL) -count $(MEASUREMENT_COUNT)"
+	$(SSH) --zone europe-west2-a cfb-lhr --command "./measure-latency -url $(WORKER_URL) -count $(MEASUREMENT_COUNT)"

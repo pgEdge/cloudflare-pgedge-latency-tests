@@ -2,8 +2,7 @@
 terraform.tfstate
 terraform.tfstate.backup
 /measure-latency
-/cfb-query-d1.url.txt
-/cfb-query-pgedge.url.txt
+/worker.url.txt
 
 # Exclude this for now since the Google project ID goes in here
 /terraform/provider.tf

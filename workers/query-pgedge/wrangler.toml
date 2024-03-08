@@ -1,8 +1,8 @@
-name = "cfb-query-pgedge"
+name = "query-pgedge"
 main = "src/index.ts"
 compatibility_date = "2024-03-04"
 node_compat = true
 
 [[hyperdrive]]
 binding = "HYPERDRIVE"
-id = ""
+id = "FILL-THIS-IN-WITH-YOUR-HYPERDRIVE-ID"
